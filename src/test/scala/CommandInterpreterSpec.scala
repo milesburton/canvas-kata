@@ -51,4 +51,16 @@ class CommandInterpreterSpec extends FlatSpec with Matchers {
 
   }
 
+  it should "return bucket fill command" in {
+
+    val userInput = "B 10 3 o"
+
+    val command = new CommandInterpreter().interpret(userInput)
+
+    command should be(BucketFillCommand(10,3,"o"))
+
+  }
+
+
+
 }
