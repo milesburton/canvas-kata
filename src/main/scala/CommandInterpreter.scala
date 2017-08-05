@@ -4,15 +4,17 @@ class CommandInterpreter() {
 
   val isDrawLineStringRegEx = "^L\\s(\\d+)\\s(\\d+)\\s(\\d+)\\s(\\d+)$".r
 
+  implicit def convertStringToInt(string: String): Int = string.toInt
+
   def interpret(userInput: String) = {
 
     userInput match {
 
       case isCreateCanvasStringRegEx(width, height) =>
-        CreateCanvasCommand(width.toInt, height.toInt)
+        CreateCanvasCommand(width, height)
 
       case isDrawLineStringRegEx(x1, y1, x2, y2) =>
-        DrawLineCommand(x1.toInt, y1.toInt, x2.toInt, y2.toInt)
+        DrawLineCommand(x1, y1, x2, y2)
 
       case _ =>
         None
