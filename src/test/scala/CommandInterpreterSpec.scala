@@ -61,6 +61,26 @@ class CommandInterpreterSpec extends FlatSpec with Matchers {
 
   }
 
+  it should "gracefully handle invalid bucket fill command" in {
+
+    val userInput = "B 1 2 X"
+
+    val command = new CommandInterpreter().interpret(userInput)
+
+    command should be(None)
+
+  }
+
+  it should "return exit application command" in {
+
+    val userInput = "Q"
+
+    val command = new CommandInterpreter().interpret(userInput)
+
+    command should be(ExitApplicationCommand())
+
+  }
+
 
 
 }
