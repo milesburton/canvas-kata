@@ -2,37 +2,49 @@ package model
 
 import command.DrawLineCommand
 
-class Canvas(width: Int, height: Int) {
+class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
+
+  private def bufferSizeAs1DimensionalArray = height * width
+
+  private def fillBufferWithEmptyChars = Array.tabulate[Char](bufferSizeAs1DimensionalArray)((i) => backgroundChar)
 
   private var buffer: Array[Char] = fillBufferWithEmptyChars
-
-  private def fillBufferWithEmptyChars = Array.tabulate[Char](height * width)((i) => '-')
 
   def drawLine(command: DrawLineCommand): Unit = {
 
     buffer = buffer
       .zipWithIndex
-      .map { case (char, idx) =>
+      .map { case (backgroundChar, idx) =>
 
-        if (command.y1 == command.y2) {
+        if (command.isHorizontal) {
 
-          drawLineHorizontal(command, char, idx)
+          drawLineHorizontal(command, backgroundChar, idx)
 
-        } else if (command.y1 != command.y2 && command.x1 == command.y2) {
+        } else if (command.isVertical) {
 
-          drawLineVertical(command, char, idx)
+          drawLineVertical(command, backgroundChar, idx)
 
         } else {
           throw new NotImplementedError()
         }
-
-
       }
 
   }
 
-  private def drawLineVertical(command: DrawLineCommand, char: Char, idx: Int) = {
-    'x'
+  private def drawLineVertical(command: DrawLineCommand, char: Char, idx: Int): Char = {
+
+    val y: Int = Math.floor(idx / width).toInt
+    val x: Int = idx - (y * width)
+
+    val yTop = Math.min(command.y1, command.y2) - 1
+    val yBottom = Math.max(command.y1, command.y2) - 1
+
+    if (y >= yTop && y <= yBottom && command.x1 - 1 == x) {
+      'x'
+    } else {
+      char
+    }
+
   }
 
   private def drawLineHorizontal(command: DrawLineCommand, char: Char, idx: Int) = {
