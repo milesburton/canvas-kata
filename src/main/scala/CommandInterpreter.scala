@@ -1,8 +1,11 @@
+import command.{BucketFillCommand, CreateCanvasCommand, DrawLineCommand, ExitApplicationCommand}
+
 import scala.util.matching.Regex
 
 class CommandInterpreter() {
 
   // Todo can be enhanced using strategies, or maybe a chain of responsibility? A later refactor
+  // Also worth considering the need for command validation. If a line command is only horizontal + vertical, we should reject invalid rules
 
   val isCreateCanvasStringRegEx: Regex = "^C\\s(\\d+)\\s(\\d+)$".r
 
@@ -36,13 +39,5 @@ class CommandInterpreter() {
 
   }
 
-
 }
 
-case class CreateCanvasCommand(width: Int, height: Int)
-
-case class DrawLineCommand(x1: Int, y1: Int, x2: Int, y2: Int)
-
-case class BucketFillCommand(x: Int, y: Int, color: String)
-
-case class ExitApplicationCommand()

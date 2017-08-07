@@ -1,3 +1,4 @@
+import command.{BucketFillCommand, CreateCanvasCommand, DrawLineCommand, ExitApplicationCommand}
 import org.scalatest.{FlatSpec, Matchers}
 
 class CommandInterpreterSpec extends FlatSpec with Matchers {
