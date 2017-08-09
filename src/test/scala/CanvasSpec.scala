@@ -118,6 +118,31 @@ class CanvasSpec extends FlatSpec with Matchers with BeforeAndAfterEach {
     renderedCanvas should be(expectedCanvas)
   }
 
+
+  it should "bucket fill around a rectangle" in {
+
+    val canvas = new Canvas(10,10)
+
+    canvas.drawRectangle(DrawRectangleCommand(2,1,5,3))
+    canvas.bucketFill(BucketFillCommand(9,9,'z'))
+
+    val renderedCanvas = TestRendererUtil.render(canvas)
+
+    val expectedCanvas = cleanCanvasExpectation(
+      """zxxxxzzzzz
+        |zx--xzzzzz
+        |zxxxxzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz""")
+
+    renderedCanvas should be(expectedCanvas)
+  }
+
   // Resolve the windows/unix line ending mismatch
   def cleanCanvasExpectation(expectation: String) = expectation.stripMargin.replace("\r\n", "\n")
 }

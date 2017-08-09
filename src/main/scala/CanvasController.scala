@@ -1,6 +1,7 @@
 import command.{Command, CreateCanvasCommand, DrawLineCommand}
 import model.Canvas
 
+// TODO: reinstate this controller to handle command history.
 class CanvasController {
 
 //  private var canvas: Option[Canvas] = None

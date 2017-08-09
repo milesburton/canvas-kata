@@ -2,7 +2,7 @@ package model
 
 import command.{BucketFillCommand, DrawLineCommand, DrawRectangleCommand}
 
-class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
+class Canvas(width: Int, height: Int, backgroundChar: Char = '-', boundaryColour: Char = 'x') {
 
   private def bufferSizeAs1DimensionalArray = height * width
 
@@ -42,7 +42,7 @@ class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
     val yBottom = Math.max(y1, y2)
 
     if (y >= yTop && y <= yBottom && x1 == x) {
-      'x'
+      boundaryColour
     } else {
       char
     }
@@ -58,7 +58,7 @@ class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
     val endIndex = convertXYToBufferIdx(x2, y2)
 
     if (idx >= startIndex && idx <= endIndex) {
-      'x'
+      boundaryColour
     } else {
       char
     }
@@ -92,6 +92,10 @@ class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
       }
 
       if (buffer(idx) == replacementColour) {
+        return
+      }
+
+      if (buffer(idx) == boundaryColour) {
         return
       }
 
