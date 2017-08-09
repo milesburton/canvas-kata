@@ -1,4 +1,4 @@
-import command.{BucketFillCommand, CreateCanvasCommand, DrawLineCommand, ExitApplicationCommand}
+import command._
 
 import scala.util.matching.Regex
 
@@ -12,6 +12,8 @@ class CommandInterpreter() {
   val isDrawLineStringRegEx: Regex = "^L\\s(\\d+)\\s(\\d+)\\s(\\d+)\\s(\\d+)$".r
 
   val isFillBucketStringRegEx: Regex = "^B\\s(\\d+)\\s(\\d+)\\s([a-z])$".r
+
+  val isRectangleStringRegEx: Regex = "^R\\s(\\d+)\\s(\\d+)\\s(\\d+)\\s(\\d+)$".r
 
   val isExitApplicationStringRegEx: Regex = "^Q$".r
 
@@ -31,6 +33,10 @@ class CommandInterpreter() {
 
       case isExitApplicationStringRegEx() =>
         ExitApplicationCommand()
+
+
+      case isRectangleStringRegEx(x1, y1, x2, y2) =>
+        DrawRectangleCommand(x1.toInt, y1.toInt, x2.toInt, y2.toInt)
 
       case _ =>
         None

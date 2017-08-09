@@ -1,6 +1,6 @@
 package model
 
-import command.DrawLineCommand
+import command.{DrawLineCommand, DrawRectangleCommand}
 
 class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
 
@@ -60,6 +60,9 @@ class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
 
   }
 
+  def drawRectangle(command: DrawRectangleCommand) = {
+    throw new NotImplementedError()
+  }
 
   def getBuffer: Array[Char] = buffer
 

@@ -1,4 +1,4 @@
-import command.{BucketFillCommand, CreateCanvasCommand, DrawLineCommand, ExitApplicationCommand}
+import command._
 import org.scalatest.{FlatSpec, Matchers}
 
 class CommandInterpreterSpec extends FlatSpec with Matchers {
@@ -69,6 +69,16 @@ class CommandInterpreterSpec extends FlatSpec with Matchers {
     val command = new CommandInterpreter().interpret(userInput)
 
     command should be(None)
+
+  }
+
+  it should "return rectangle command" in {
+
+    val userInput = "R 14 1 18 3"
+
+    val command = new CommandInterpreter().interpret(userInput)
+
+    command should be(DrawRectangleCommand(14,1,18,3))
 
   }
 

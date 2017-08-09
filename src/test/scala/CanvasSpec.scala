@@ -1,4 +1,4 @@
-import command.DrawLineCommand
+import command.{DrawLineCommand, DrawRectangleCommand}
 import helper.TestRendererUtil
 import model.Canvas
 import org.scalatest.{BeforeAndAfterEach, FlatSpec, Matchers}
@@ -71,5 +71,30 @@ class CanvasSpec extends FlatSpec with Matchers with BeforeAndAfterEach {
 
     renderedCanvas should be(expectedCanvas)
   }
+
+  it should "draw a box" in {
+
+    val canvas = new Canvas(10,10)
+
+    canvas.drawRectangle(DrawRectangleCommand(6,3,6,4))
+
+    val renderedCanvas = TestRendererUtil.render(canvas)
+
+    val expectedCanvas = cleanCanvasExpectation(
+      """-xxxx-----
+        |-x--x-----
+        |-xxxx-----
+        |----------
+        |----------
+        |----------
+        |----------
+        |----------
+        |----------
+        |----------""")
+
+    renderedCanvas should be(expectedCanvas)
+  }
+
+  // Resolve the windows/unix line ending mismatch
   def cleanCanvasExpectation(expectation: String) = expectation.stripMargin.replace("\r\n", "\n")
 }
