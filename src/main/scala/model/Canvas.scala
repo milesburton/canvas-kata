@@ -14,15 +14,15 @@ class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
 
     buffer = buffer
       .zipWithIndex
-      .map { case (backgroundChar, idx) =>
+      .map { case (idxChar, idx) =>
 
         if (command.isHorizontal) {
 
-          drawLineHorizontal(command, backgroundChar, idx)
+          drawLineHorizontal(command, idxChar, idx)
 
         } else if (command.isVertical) {
 
-          drawLineVertical(command, backgroundChar, idx)
+          drawLineVertical(command, idxChar, idx)
 
         } else {
           throw new NotImplementedError()
@@ -33,12 +33,15 @@ class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
 
   private def drawLineVertical(command: DrawLineCommand, char: Char, idx: Int): Char = {
 
+    val (x1, y1) = convertXYToBufferDimension(command.x1, command.y1)
+    val (x2, y2) = convertXYToBufferDimension(command.x2, command.y2)
+
     val (x, y) = convertBufferIdxToXYTuple(idx)
 
-    val yTop = Math.min(command.y1, command.y2) - 1
-    val yBottom = Math.max(command.y1, command.y2) - 1
+    val yTop = Math.min(y1, y2)
+    val yBottom = Math.max(y1, y2)
 
-    if (y >= yTop && y <= yBottom && command.x1 - 1 == x) {
+    if (y >= yTop && y <= yBottom && x1 == x) {
       'x'
     } else {
       char
@@ -48,8 +51,11 @@ class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
 
   private def drawLineHorizontal(command: DrawLineCommand, char: Char, idx: Int) = {
 
-    val startIndex = convertXYToBufferIdx(command.x1, command.y1)
-    val endIndex = convertXYToBufferIdx(command.x2, command.y2)
+    val (x1, y1) = convertXYToBufferDimension(command.x1, command.y1)
+    val (x2, y2) = convertXYToBufferDimension(command.x2, command.y2)
+
+    val startIndex = convertXYToBufferIdx(x1, y1)
+    val endIndex = convertXYToBufferIdx(x2, y2)
 
     if (idx >= startIndex && idx <= endIndex) {
       'x'
@@ -61,10 +67,15 @@ class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
 
   def drawRectangle(command: DrawRectangleCommand) = {
 
-    drawLine(DrawLineCommand(command.x1, command.y1, command.x2, command.y1))
-    drawLine(DrawLineCommand(command.x1, command.y1, command.x1, command.y2))
-    drawLine(DrawLineCommand(command.x1, command.y2, command.x2, command.y2))
-    drawLine(DrawLineCommand(command.x2, command.y1, command.x2, command.y2))
+    val drawLineFromTopLeftToTopRight = DrawLineCommand(command.x1, command.y1, command.x2, command.y1)
+    val drawLineFromTopLeftToBottomLeft = DrawLineCommand(command.x1, command.y1, command.x1, command.y2)
+    val drawLineFromBottomLeftToBottomRight = DrawLineCommand(command.x1, command.y2, command.x2, command.y2)
+    val drawLineFromBottomRightToTopRight = DrawLineCommand(command.x2, command.y1, command.x2, command.y2)
+
+    drawLine(drawLineFromTopLeftToTopRight)
+    drawLine(drawLineFromTopLeftToBottomLeft)
+    drawLine(drawLineFromBottomLeftToBottomRight)
+    drawLine(drawLineFromBottomRightToTopRight)
 
   }
 
@@ -76,7 +87,7 @@ class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
 
       val (x, y) = convertBufferIdxToXYTuple(idx)
 
-      if (x < 0 || y < 0 || x > (width-1) || y > (height-1)) {
+      if (x < 0 || y < 0 || x > (width - 1) || y > (height - 1)) {
         return
       }
 
@@ -103,7 +114,7 @@ class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
   }
 
   def convertXYToBufferIdx(x: Int, y: Int): Int = {
-    ((y - 1) * width) + x - 1
+    ((y) * width) + x
   }
 
   def convertBufferIdxToXYTuple(idx: Int): (Int, Int) = {
@@ -113,6 +124,10 @@ class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
     val x: Int = idx - (y * width)
 
     (x, y)
+  }
+
+  def convertXYToBufferDimension(x: Int, y: Int): (Int, Int) = {
+    (x - 1, y - 1)
   }
 
   def getBuffer: Array[Char] = buffer
