@@ -1,4 +1,4 @@
-import command.{DrawLineCommand, DrawRectangleCommand}
+import command.{BucketFillCommand, DrawLineCommand, DrawRectangleCommand}
 import helper.TestRendererUtil
 import model.Canvas
 import org.scalatest.{BeforeAndAfterEach, FlatSpec, Matchers}
@@ -91,6 +91,29 @@ class CanvasSpec extends FlatSpec with Matchers with BeforeAndAfterEach {
         |----------
         |----------
         |----------""")
+
+    renderedCanvas should be(expectedCanvas)
+  }
+
+  it should "bucket fill an empty canvas" in {
+
+    val canvas = new Canvas(10,10)
+
+    canvas.bucketFill(BucketFillCommand(3,3,'z'))
+
+    val renderedCanvas = TestRendererUtil.render(canvas)
+
+    val expectedCanvas = cleanCanvasExpectation(
+      """zzzzzzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz
+        |zzzzzzzzzz""")
 
     renderedCanvas should be(expectedCanvas)
   }
