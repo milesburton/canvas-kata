@@ -72,11 +72,11 @@ class CanvasSpec extends FlatSpec with Matchers with BeforeAndAfterEach {
     renderedCanvas should be(expectedCanvas)
   }
 
-  it should "draw a box" in {
+  it should "draw a rectangle" in {
 
     val canvas = new Canvas(10,10)
 
-    canvas.drawRectangle(DrawRectangleCommand(6,3,6,4))
+    canvas.drawRectangle(DrawRectangleCommand(2,1,5,3))
 
     val renderedCanvas = TestRendererUtil.render(canvas)
 

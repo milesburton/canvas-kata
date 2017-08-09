@@ -1,3 +1,3 @@
 package command
 
-case class DrawRectangleCommand(i: Int, i1: Int, i2: Int, i3: Int) extends Command
+case class DrawRectangleCommand(x1: Int, y1: Int, x2: Int, y2: Int) extends Command

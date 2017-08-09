@@ -61,7 +61,12 @@ class Canvas(width: Int, height: Int, backgroundChar: Char = '-') {
   }
 
   def drawRectangle(command: DrawRectangleCommand) = {
-    throw new NotImplementedError()
+
+    drawLine(DrawLineCommand(command.x1, command.y1, command.x2, command.y1))
+    drawLine(DrawLineCommand(command.x1, command.y1, command.x1, command.y2))
+    drawLine(DrawLineCommand(command.x1, command.y2, command.x2, command.y2))
+    drawLine(DrawLineCommand(command.x2, command.y1, command.x2, command.y2))
+
   }
 
   def getBuffer: Array[Char] = buffer
