@@ -1,6 +1,4 @@
-== The Problem ==
-
-=== Description ===
+## Description
 
 You're given the task of writing a simple console version of a drawing program.
 At this time, the functionality of the program is quire limited but this might change in the future.
